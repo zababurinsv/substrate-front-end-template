@@ -12,6 +12,7 @@ import { blake2AsHex } from '@polkadot/util-crypto';
 export function Main (props) {
   // Establish an API to talk to our Substrate node.
   const { api } = useSubstrate();
+  console.log('~~~~~~~~~~~~~~~~~~~~~~~>>>', api);
   // Get the selected user from the `AccountSelector` component.
   const { accountPair } = props;
   // React hooks for all the state variables we track.
@@ -45,11 +46,11 @@ export function Main (props) {
   // React hook to update the owner and block number information for a file.
   useEffect(() => {
     let unsubscribe;
-
     // Polkadot-JS API query to the `proofs` storage item in our pallet.
     // This is a subscription, so it will always get the latest value,
     // even if it changes.
-    api.query.templateModule
+
+    api.query.donation
       .proofs(digest, (result) => {
         // Our storage item returns a tuple, which is represented as an array.
         setOwner(result[0].toString());
@@ -63,7 +64,7 @@ export function Main (props) {
     // This tells the React hook to update whenever the file digest changes
     // (when a new file is chosen), or when the storage subscription says the
     // value of the storage item has updated.
-  }, [digest, api.query.templateModule]);
+  }, [digest, api.query.donation]);
 
   // We can say a file digest is claimed if the stored block number is not 0.
   function isClaimed () {
@@ -74,7 +75,7 @@ export function Main (props) {
   return (
     <org-main>
       <Grid.Column slot="host">
-        <h1>Proof Of Existence</h1>
+        <h1>Donation</h1>
         {/* Show warning or success message if the file is or is not claimed. */}
         <Form success={!!digest && !isClaimed()} warning={isClaimed()}>
           <Form.Field>
@@ -105,7 +106,7 @@ export function Main (props) {
               type='SIGNED-TX'
               disabled={isClaimed() || !digest}
               attrs={{
-                palletRpc: 'templateModule',
+                palletRpc: 'donation',
                 callable: 'createClaim',
                 inputParams: [digest],
                 paramFields: [true]
@@ -120,7 +121,7 @@ export function Main (props) {
               type='SIGNED-TX'
               disabled={!isClaimed() || owner !== accountPair.address}
               attrs={{
-                palletRpc: 'templateModule',
+                palletRpc: 'donation',
                 callable: 'revokeClaim',
                 inputParams: [digest],
                 paramFields: [true]
@@ -137,7 +138,7 @@ export function Main (props) {
 
 export default function TemplateModule (props) {
   const { api } = useSubstrate();
-  return (api.query.templateModule && api.query.templateModule.proofs
+  return (api.query.donation && api.query.donation.proofs
     ? <Main {...props} />
     : null);
 }
