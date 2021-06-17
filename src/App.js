@@ -5,17 +5,17 @@ import 'semantic-ui-css/semantic.min.css';
 import { SubstrateContextProvider, useSubstrate } from './substrate-lib';
 import { DeveloperConsole } from './substrate-lib/components';
 
-import AccountSelector from './AccountSelector';
-import Balances from './Balances';
-import BlockNumber from './BlockNumber';
-import Events from './Events';
-import Interactor from './Interactor';
-import Metadata from './Metadata';
-import NodeInfo from './NodeInfo';
-import Test from './Test';
-import Donation from './Donation';
-import Transfer from './Transfer';
-import Upgrade from './Upgrade';
+import AccountSelector from './components/AccountSelector';
+import Balances from './components/Balances';
+import BlockNumber from './components/BlockNumber';
+import Events from './components/Events';
+import Interactor from './components/Interactor';
+import Metadata from './components/Metadata';
+import NodeInfo from './components/NodeInfo';
+import Test from './components/Test';
+import Donation from './components/Donation';
+import Transfer from './components/Transfer';
+import Upgrade from './components/Upgrade';
 
 function Main () {
   const [accountAddress, setAccountAddress] = useState(null);

@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Grid, Message } from 'semantic-ui-react';
 // Pre-built Substrate front-end utilities for connecting to a node
 // and making a transaction.
-import { useSubstrate } from './substrate-lib';
-import { TxButton } from './substrate-lib/components';
+import { useSubstrate } from '../substrate-lib';
+import { TxButton } from '../substrate-lib/components';
 // Polkadot-JS utilities for hashing data.
 import { blake2AsHex } from '@polkadot/util-crypto';
 
@@ -75,7 +75,7 @@ export function Main (props) {
   return (
     <org-main>
       <Grid.Column slot="host">
-        <h1>Proof Of Existence</h1>
+        <h1>Donation</h1>
         {/* Show warning or success message if the file is or is not claimed. */}
         <Form success={!!digest && !isClaimed()} warning={isClaimed()}>
           <Form.Field>
