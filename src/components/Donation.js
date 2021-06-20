@@ -7,12 +7,12 @@ import { useSubstrate } from '../substrate-lib';
 import { TxButton } from '../substrate-lib/components';
 // Polkadot-JS utilities for hashing data.
 import { blake2AsHex } from '@polkadot/util-crypto';
-
+import sys from '../sys.mjs';
 // Our main Proof Of Existence Component which is exported.
 export function Main (props) {
   // Establish an API to talk to our Substrate node.
   const { api } = useSubstrate();
-  console.log('~~~~~~~~~~~~~~~~~~~~~~~>>>', api);
+  sys.api = api;
   // Get the selected user from the `AccountSelector` component.
   const { accountPair } = props;
   // React hooks for all the state variables we track.
@@ -52,6 +52,7 @@ export function Main (props) {
 
     api.query.donation
       .proofs(digest, (result) => {
+        sys.donation = result;
         // Our storage item returns a tuple, which is represented as an array.
         setOwner(result[0].toString());
         setBlock(result[1].toNumber());

@@ -5,6 +5,7 @@ import { useSubstrate } from '../substrate-lib';
 
 export default function Main (props) {
   const { api, keyring } = useSubstrate();
+  console.assert(false);
   const accounts = keyring.getPairs();
   const [balances, setBalances] = useState({});
 

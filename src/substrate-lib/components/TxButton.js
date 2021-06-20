@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import { web3FromSource } from '@polkadot/extension-dapp';
-
+import sys from '../../sys.mjs';
 import { useSubstrate } from '../';
 import utils from '../utils';
 
@@ -104,7 +104,7 @@ function TxButton ({
       .catch(txErrHandler);
     setUnsub(() => unsub);
   };
-
+  sys.signedTx = signedTx;
   const unsignedTx = async () => {
     const transformed = transformParams(paramFields, inputParams);
     // transformed can be empty parameters
@@ -116,7 +116,7 @@ function TxButton ({
       .catch(txErrHandler);
     setUnsub(() => unsub);
   };
-
+  sys.unsignedTx = unsignedTx;
   const queryResHandler = result =>
     result.isNone ? setStatus('None') : setStatus(result.toString());
 
@@ -125,24 +125,24 @@ function TxButton ({
     const unsub = await api.query[palletRpc][callable](...transformed, queryResHandler);
     setUnsub(() => unsub);
   };
-
+  sys.query = query;
   const rpc = async () => {
     const transformed = transformParams(paramFields, inputParams, { emptyAsNull: false });
     const unsub = await api.rpc[palletRpc][callable](...transformed, queryResHandler);
     setUnsub(() => unsub);
   };
-
+  sys.rpc = rpc;
   const constant = () => {
     const result = api.consts[palletRpc][callable];
     result.isNone ? setStatus('None') : setStatus(result.toString());
   };
-
+  sys.constant = constant;
   const transaction = async () => {
     if (unsub) {
       unsub();
       setUnsub(null);
     }
-
+    sys.transaction = transaction;
     setStatus('Sending...');
 
     (isSudo() && sudoTx()) ||

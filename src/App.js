@@ -1,7 +1,7 @@
 import React, { useState, createRef } from 'react';
 import { Container, Dimmer, Loader, Grid, Sticky, Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-
+import sys from './sys.mjs';
 import { SubstrateContextProvider, useSubstrate } from './substrate-lib';
 import { DeveloperConsole } from './substrate-lib/components';
 
@@ -16,7 +16,8 @@ import Test from './components/Test';
 import Donation from './components/Donation';
 import Transfer from './components/Transfer';
 import Upgrade from './components/Upgrade';
-
+window['@zb'] = {};
+window['@zb'].sys = sys;
 function Main () {
   const [accountAddress, setAccountAddress] = useState(null);
   const { apiState, keyring, keyringState, apiError } = useSubstrate();
@@ -24,12 +25,16 @@ function Main () {
     accountAddress &&
     keyringState === 'READY' &&
     keyring.getPair(accountAddress);
-
+  sys.accountAddress = accountAddress;
+  sys.apiState = apiState;
+  sys.keyring = keyring;
+  sys.keyringState = keyringState;
+  sys.apiError = apiError;
   const loader = text =>
     <Dimmer active>
       <Loader size='small'>{text}</Loader>
     </Dimmer>;
-
+  sys.loader = loader;
   const message = err =>
     <Grid centered columns={2} padded>
       <Grid.Column>
@@ -39,7 +44,7 @@ function Main () {
         />
       </Grid.Column>
     </Grid>;
-
+  sys.message = message;
   if (apiState === 'ERROR') return message(apiError);
   else if (apiState !== 'READY') return loader('Connecting to Substrate');
 
@@ -48,7 +53,7 @@ function Main () {
   }
 
   const contextRef = createRef();
-
+  sys.contextRef = contextRef;
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef}>
