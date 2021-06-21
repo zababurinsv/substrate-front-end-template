@@ -1,9 +1,9 @@
 import isEmpty from './isEmpty.mjs';
 import { hearts } from './emoji.mjs';
-import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import config from './config/index.js'
+// import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
+// import config from './config/index.js'
 let sys = undefined
-import { createStore } from 'redux'
+// import { createStore } from 'redux'
 import redux from '@reduxjs/toolkit'
 let createSlice = redux.createSlice
 let configureStore = redux.configureStore
@@ -102,13 +102,13 @@ let init = () =>{
       if (sKey in oTarget) { return false; }
       return oTarget.removeItem(sKey);
     },
-    "enumerate": function (oTarget, sKey) {
+    "enumerate": function (oTarget) {
       return oTarget.keys();
     },
-    "iterate": function (oTarget, sKey) {
+    "iterate": function (oTarget) {
       return oTarget.keys();
     },
-    "ownKeys": function (oTarget, sKey) {
+    "ownKeys": function (oTarget) {
       return oTarget.keys();
     },
     "has": function (oTarget, sKey) {
@@ -128,7 +128,7 @@ let init = () =>{
       return Object.getOwnPropertyNames(oTarget).concat(oTarget.keys());
     },
     "getPropertyDescriptor": function (oTarget, sKey) {
-      var vValue = oTarget[sKey] || oTarget.getItem(sKey)
+      let vValue = oTarget[sKey] || oTarget.getItem(sKey)
       return vValue ? {
         "value": vValue,
         "writable": true,
@@ -137,7 +137,7 @@ let init = () =>{
       } : undefined;
     },
     "getOwnPropertyDescriptor": function (oTarget, sKey) {
-      var vValue = oTarget.getItem(sKey);
+      let vValue = oTarget.getItem(sKey)
       return vValue ? {
         "value": vValue,
         "writable": true,

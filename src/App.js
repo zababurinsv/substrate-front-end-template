@@ -21,6 +21,15 @@ window['@zb'].sys = sys;
 function Main () {
   const [accountAddress, setAccountAddress] = useState(null);
   const { apiState, keyring, keyringState, apiError } = useSubstrate();
+
+  console.log({
+    accountAddress: accountAddress,
+    setAccountAddress: setAccountAddress,
+    apiState: apiState,
+    keyring: keyring,
+    keyringState: keyringState
+  });
+  console.assert(false);
   const accountPair =
     accountAddress &&
     keyringState === 'READY' &&

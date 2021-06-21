@@ -4,7 +4,6 @@ let toString = Object.prototype.toString
 function isEmpty(val) {
     // Null and Undefined...
     if (val == null) return true
-
     // Booleans...
     if ('boolean' == typeof val) return false
 
