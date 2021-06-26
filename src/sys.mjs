@@ -1,12 +1,12 @@
 import isEmpty from './isEmpty.mjs';
 import { hearts } from './emoji.mjs';
+// import { createStore } from 'redux'
+import redux from '@reduxjs/toolkit';
 // import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 // import config from './config/index.js'
-let sys = undefined
-// import { createStore } from 'redux'
-import redux from '@reduxjs/toolkit'
-let createSlice = redux.createSlice
-let configureStore = redux.configureStore
+let sys;
+const createSlice = redux.createSlice;
+const configureStore = redux.configureStore;
 const INIT_STATE = {
   keyring: null,
   keyringState: null,
@@ -17,10 +17,10 @@ const INIT_STATE = {
 };
 
 const reducer = (state, action) => {
-  console.log('-----ssssssssss--reducer----------',{
+  console.log('-----ssssssssss--reducer----------', {
     state: state,
-    action:action
-  })
+    action: action
+  });
   switch (action.type) {
     case 'CONNECT_INIT':
       return { ...state, apiState: 'CONNECT_INIT' };
@@ -45,10 +45,13 @@ const reducer = (state, action) => {
 
     default:
       console.log('----->', {
-        "action.payload": action
-      })
-      return { ...state, keyring: action.payload, counter: {
-          index:'sssssssssss'
+        'action.payload': action
+      });
+      return {
+        ...state,
+        keyring: action.payload,
+        counter: {
+          index: 'sssssssssss'
         }
       };
       // return { ...state, keyring: null, keyringState: 'ddddddddddd' };
@@ -60,102 +63,104 @@ const counterSlice = createSlice({
   name: 'chain',
   initialState: INIT_STATE,
   reducers: {
-    substrate: reducer,
-  },
-})
-const { substrate } = counterSlice.actions
-console.log('sssssssssssssssssssssssssssss',substrate)
+    substrate: reducer
+  }
+});
+const { substrate } = counterSlice.actions;
+console.log('sssssssssssssssssssssssssssss', substrate);
 
 const store = configureStore({
   reducer: counterSlice.reducer
-})
+});
 
+store.subscribe(() => console.log(`${hearts[2][1]} -> store`, store.getState()));
 
-store.subscribe(() => console.log(`${hearts[2][1]} -> store`,store.getState()))
-
-let init = () =>{
+const init = () => {
+  // eslint-disable-next-line
   return sys = new Proxy({}, {
     get: (obj, prop) => {
       console.log(`${hearts[0][0]} -> get`, {
-        obj:obj,
-        prop:prop,
+        obj: obj,
+        prop: prop
       });
       return obj[prop];
     },
     set: (obj, prop, value) => {
-      if(isEmpty(obj[prop])) {
+      if (isEmpty(obj[prop])) {
         obj[prop] = [];
       }
       console.log(`${hearts[2][0]} -> set`, {
-        prop:prop,
-        value:value,
-      })
-      store.dispatch(substrate( ))
+        prop: prop,
+        value: value
+      });
+      store.dispatch(substrate());
       obj[prop].push(value);
       return true;
     },
-    "deleteProperty": function (oTarget, sKey) {
+    deleteProperty: function (oTarget, sKey) {
       console.log(`${hearts[0][1]} -> get`, {
-        oTarget:oTarget,
-        sKey:sKey
+        oTarget: oTarget,
+        sKey: sKey
       });
       if (sKey in oTarget) { return false; }
       return oTarget.removeItem(sKey);
     },
-    "enumerate": function (oTarget) {
+    enumerate: function (oTarget) {
       return oTarget.keys();
     },
-    "iterate": function (oTarget) {
+    iterate: function (oTarget) {
       return oTarget.keys();
     },
-    "ownKeys": function (oTarget) {
+    ownKeys: function (oTarget) {
       return oTarget.keys();
     },
-    "has": function (oTarget, sKey) {
+    has: function (oTarget, sKey) {
       return sKey in oTarget || oTarget.hasItem(sKey);
     },
-    "hasOwn": function (oTarget, sKey) {
+    hasOwn: function (oTarget, sKey) {
       return oTarget.hasItem(sKey);
     },
-    "defineProperty": function (oTarget, sKey, oDesc) {
-      if (oDesc && "value" in oDesc) { oTarget.setItem(sKey, oDesc.value); }
+    defineProperty: function (oTarget, sKey, oDesc) {
+      if (oDesc && 'value' in oDesc) { oTarget.setItem(sKey, oDesc.value); }
       return oTarget;
     },
-    "getPropertyNames": function (oTarget) {
+    getPropertyNames: function (oTarget) {
       return Object.getPropertyNames(oTarget).concat(oTarget.keys());
     },
-    "getOwnPropertyNames": function (oTarget) {
+    getOwnPropertyNames: function (oTarget) {
       return Object.getOwnPropertyNames(oTarget).concat(oTarget.keys());
     },
-    "getPropertyDescriptor": function (oTarget, sKey) {
-      let vValue = oTarget[sKey] || oTarget.getItem(sKey)
-      return vValue ? {
-        "value": vValue,
-        "writable": true,
-        "enumerable": true,
-        "configurable": false
-      } : undefined;
+    getPropertyDescriptor: function (oTarget, sKey) {
+      const vValue = oTarget[sKey] || oTarget.getItem(sKey);
+      return vValue
+        ? {
+            value: vValue,
+            writable: true,
+            enumerable: true,
+            configurable: false
+          }
+        : undefined;
     },
-    "getOwnPropertyDescriptor": function (oTarget, sKey) {
-      let vValue = oTarget.getItem(sKey)
-      return vValue ? {
-        "value": vValue,
-        "writable": true,
-        "enumerable": true,
-        "configurable": false
-      } : undefined;
+    getOwnPropertyDescriptor: function (oTarget, sKey) {
+      const vValue = oTarget.getItem(sKey);
+      return vValue
+        ? {
+            value: vValue,
+            writable: true,
+            enumerable: true,
+            configurable: false
+          }
+        : undefined;
     },
-    "fix":  function (oTarget) {
+    fix: function (oTarget) {
       console.log(`${hearts[0][1]} -> get`, {
-        oTarget:oTarget,
-        text:"not implemented yet!"
+        oTarget: oTarget,
+        text: 'not implemented yet!'
       });
-      return "not implemented yet!";
-    },
+      return 'not implemented yet!';
+    }
   });
-}
-export default (()=>{
-
-    return (sys === undefined) ? init() : sys
-})()
-
+};
+export default (() => {
+  return (sys === undefined) ? init() : sys;
+})();

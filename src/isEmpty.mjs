@@ -1,58 +1,48 @@
-let has = Object.prototype.hasOwnProperty
-let toString = Object.prototype.toString
+const has = Object.prototype.hasOwnProperty;
+const toString = Object.prototype.toString;
+// eslint-disable-next-line
+function isEmpty (val) {
 
-function isEmpty(val) {
-    // Null and Undefined...
-    if (val == null) return true
-    // Booleans...
-    if ('boolean' == typeof val) return false
+  if (val == null) return true;
 
-    // Numbers...
-    if ('number' == typeof val) return val === 0
+  if (typeof val === 'boolean') return false;
 
-    // Strings...
-    if ('string' == typeof val) return val.length === 0;
+  if (typeof val === 'number') return val === 0;
 
-    // Functions...
-    if ('function' == typeof val) return val.length === 0
+  if (typeof val === 'string') return val.length === 0;
 
-    // Arrays...
-    if (Array.isArray(val)) {
-        let object = val instanceof Object
-        if(object) {
-            return Object.keys(val).length === 0
-        } else {
-            return val.length === 0
-        }
+  if (typeof val === 'function') return val.length === 0;
+
+  if (Array.isArray(val)) {
+    const object = val instanceof Object;
+    if (object) {
+      return Object.keys(val).length === 0;
+    } else {
+      return val.length === 0;
     }
+  }
 
-    // Errors...
-    if (val instanceof Error) return val.message === ''
+  if (val instanceof Error) return val.message === '';
 
-    // Objects...
-    if (val.toString === toString) {
-        switch (val.toString()) {
+  if (val.toString === toString) {
+    // eslint-disable-next-line
+    switch (val.toString()) {
+      case '[object File]':
+      case '[object Map]':
+      case '[object Set]': {
+        return val.size === 0;
+      }
 
-            // Maps, Sets, Files and Errors...
-            case '[object File]':
-            case '[object Map]':
-            case '[object Set]': {
-                return val.size === 0
-            }
-
-            // Plain objects...
-            case '[object Object]': {
-                for (let key in val) {
-                    if (has.call(val, key)) return false
-                }
-
-                return true
-            }
+      case '[object Object]': {
+        for (const key in val) {
+          if (has.call(val, key)) return false;
         }
+
+        return true;
+      }
     }
-   
-    // Anything else...
-    return false
+  }
+  return false;
 }
 
-export default isEmpty
+export default isEmpty;

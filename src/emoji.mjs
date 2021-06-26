@@ -1,4 +1,3 @@
-
 const emojiMap = [
   { emoji: '💯', name: '100' },
   { emoji: '🔢', name: '1234' },
@@ -1431,50 +1430,56 @@ const emojiMap = [
   { emoji: '🇪🇭', name: 'western_sahara' },
   { emoji: '🇾🇪', name: 'yemen' },
   { emoji: '🇿🇲', name: 'zambia' },
-  { emoji: '🇿🇼', name: 'zimbabwe' },
-]
+  { emoji: '🇿🇼', name: 'zimbabwe' }
+];
 
-export let moon = [
-  ['💥','⭐','🌟','◼️'],
-  ['🌕','🌔','🌓','🌒'],
-  ['🌑','🌘','🌗','🌖'],
-]
+export const moon = [
+  ['💥', '⭐', '🌟', '◼️'],
+  ['🌕', '🌔', '🌓', '🌒'],
+  ['🌑', '🌘', '🌗', '🌖']
+];
 
-export let emoji = [
-  ['🕑','🕓','🕕','🕗️'],
-  ['🕙','🕛','🕝','🕟'],
-  ['🕡','🕣','🕥','🕧'],
-]
+export const emoji = [
+  ['🕑', '🕓', '🕕', '🕗️'],
+  ['🕙', '🕛', '🕝', '🕟'],
+  ['🕡', '🕣', '🕥', '🕧']
+];
+// eslint-disable-next-line
+export const hearts = [
+  ['💜', '💛', '💚', '💙', '🖤', '💔'],
+  ['❤', '♥', '❣', '😻', '👩‍❤️‍👩', '👨‍❤️‍👨'],
+  ['💗', '💖', '💕', '💑', '💓', '💞', '💟']
+];
 
-export let hearts = [
-    ['💜','💛','💚','💙','🖤','💔'],
-    ['❤','♥','❣','😻','👩‍❤️‍👩','👨‍❤️‍👨'],
-    ['💗','💖','💕','💑','💓','💞','💟'],
-]
-export default (name)=>{
-   let all = false
-    switch (name) {
-        case 'all':
-            all = true
-            break
-        case'hearts':
-            return hearts
-            break
-        case 'moon':
-            return moon
-            break
-        default:
-            for(let key in emojiMap){
-                if(name === emojiMap[key]['name']){
-                    return emojiMap[key]['emoji']
-                }
-            }
-            break
-    }
-    if(all){
-        return emojiMap;
-    }
-}
-emojiMap.forEach(({emoji, name}) => {
-    console[name] = console.log.bind(console, `${emoji} `);
+emojiMap.forEach(({ emoji, name }) => {
+  console[name] = console.log.bind(console, `${emoji} `);
 });
+
+// eslint-disable-next-line
+export default (name) => {
+  let all = false;
+  // eslint-disable-next-line
+  switch (name) {
+    case 'all':
+      all = true;
+      break;
+    case 'hearts':
+      return hearts;
+      // eslint-disable-next-line
+      break;
+    case 'moon':
+      return moon;
+      // eslint-disable-next-line
+      break;
+    default:
+      for (const key in emojiMap) {
+        if (name === emojiMap[key].name) {
+          return emojiMap[key].emoji;
+        }
+      }
+      break;
+  }
+  if (all) {
+    return emojiMap;
+  }
+};

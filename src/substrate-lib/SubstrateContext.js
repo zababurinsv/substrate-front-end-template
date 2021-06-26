@@ -55,9 +55,9 @@ const reducer = (state, action) => {
     default:
       throw new Error(`Unknown type: ${action.type}`);
   }
-  sys.state = state;
+  // sys.state = state;
 };
-sys.reducer = reducer;
+// sys.reducer = reducer;
 ///
 // Connecting to the Substrate node
 
