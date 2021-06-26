@@ -26,8 +26,6 @@ const INIT_STATE = {
   apiState: null
 };
 sys.INIT_STATE = INIT_STATE;
-///
-// Reducer function for `useReducer`
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -58,8 +56,6 @@ const reducer = (state, action) => {
   sys.state = state;
 };
 sys.reducer = reducer;
-///
-// Connecting to the Substrate node
 
 const connect = (state, dispatch) => {
   const { apiState, socket, jsonrpc, types } = state;
@@ -95,16 +91,24 @@ const loadAccounts = (state, dispatch) => {
     try {
       await web3Enable(config.APP_NAME);
       let allAccounts = await web3Accounts();
-      allAccounts = allAccounts.map(({ address, meta }) =>
-        ({ address, meta: { ...meta, name: `${meta.name} (${meta.source})` } }));
+      console.log('~~~ allAccounts ~~~', allAccounts);
+      allAccounts = allAccounts.map(({ address, meta }) => {
+        console.log('name ---', name, meta.source);
+        return { address, meta: { ...meta, name: `${meta.name} (${meta.source})` } };
+      });
       keyring.loadAll({ isDevelopment: config.DEVELOPMENT_KEYRING }, allAccounts);
+
+      const pair = keyring.getPair('0x9eae209069a068b7b664e1dbe69e7dcda5250dcad1b5b6ae36b3ac363925c97a');
+      console.log(pair);
+      // console.log('-------------->>', keyring);
+
       dispatch({ type: 'SET_KEYRING', payload: keyring });
     } catch (e) {
       console.error(e);
       dispatch({ type: 'KEYRING_ERROR' });
     }
   };
-  sys.asyncLoadAccounts = asyncLoadAccounts;
+  // sys.asyncLoadAccounts = asyncLoadAccounts;
   const { keyringState } = state;
   sys.keyringState = keyringState;
   // If `keyringState` is not null `asyncLoadAccounts` is running.
@@ -120,7 +124,6 @@ sys.loadAccounts = loadAccounts;
 const SubstrateContext = React.createContext();
 sys.SubstrateContext = SubstrateContext;
 const SubstrateContextProvider = (props) => {
-  // filtering props and merge with default param value
   const initState = { ...INIT_STATE };
   const neededPropNames = ['socket', 'types'];
   neededPropNames.forEach(key => {
@@ -144,6 +147,4 @@ SubstrateContextProvider.propTypes = {
   types: PropTypes.object
 };
 
-const useSubstrate = () => ({ ...useContext(SubstrateContext) });
-
-export { SubstrateContextProvider, useSubstrate };
+export { SubstrateContextProvider };

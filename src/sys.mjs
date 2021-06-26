@@ -17,10 +17,10 @@ const INIT_STATE = {
 };
 
 const reducer = (state, action) => {
-  console.log('-----ssssssssss--reducer----------',{
-    state: state,
-    action:action
-  })
+  // console.log('-----ssssssssss--reducer----------',{
+  //   state: state,
+  //   action:action
+  // })
   switch (action.type) {
     case 'CONNECT_INIT':
       return { ...state, apiState: 'CONNECT_INIT' };
@@ -44,9 +44,9 @@ const reducer = (state, action) => {
       return { ...state, keyring: null, keyringState: 'ERROR' };
 
     default:
-      console.log('----->', {
-        "action.payload": action
-      })
+      // console.log('----->', {
+      //   "action.payload": action
+      // })
       return { ...state, keyring: action.payload, counter: {
           index:'sssssssssss'
         }
@@ -64,41 +64,44 @@ const counterSlice = createSlice({
   },
 })
 const { substrate } = counterSlice.actions
-console.log('sssssssssssssssssssssssssssss',substrate)
+// console.log('sssssssssssssssssssssssssssss',substrate)
 
 const store = configureStore({
   reducer: counterSlice.reducer
 })
 
 
-store.subscribe(() => console.log(`${hearts[2][1]} -> store`,store.getState()))
+store.subscribe((e) => {
+  store.getState()
+  // console.log(`${hearts[2][1]} -> store`,store.getState())
+})
 
 let init = () =>{
   return sys = new Proxy({}, {
     get: (obj, prop) => {
-      console.log(`${hearts[0][0]} -> get`, {
-        obj:obj,
-        prop:prop,
-      });
+      // console.log(`${hearts[0][0]} -> get`, {
+      //   obj:obj,
+      //   prop:prop,
+      // });
       return obj[prop];
     },
     set: (obj, prop, value) => {
       if(isEmpty(obj[prop])) {
         obj[prop] = [];
       }
-      console.log(`${hearts[2][0]} -> set`, {
-        prop:prop,
-        value:value,
-      })
+      // console.log(`${hearts[2][0]} -> set`, {
+      //   prop:prop,
+      //   value:value,
+      // })
       store.dispatch(substrate( ))
       obj[prop].push(value);
       return true;
     },
     "deleteProperty": function (oTarget, sKey) {
-      console.log(`${hearts[0][1]} -> get`, {
-        oTarget:oTarget,
-        sKey:sKey
-      });
+      // console.log(`${hearts[0][1]} -> get`, {
+      //   oTarget:oTarget,
+      //   sKey:sKey
+      // });
       if (sKey in oTarget) { return false; }
       return oTarget.removeItem(sKey);
     },
@@ -146,10 +149,10 @@ let init = () =>{
       } : undefined;
     },
     "fix":  function (oTarget) {
-      console.log(`${hearts[0][1]} -> get`, {
-        oTarget:oTarget,
-        text:"not implemented yet!"
-      });
+      // console.log(`${hearts[0][1]} -> get`, {
+      //   oTarget:oTarget,
+      //   text:"not implemented yet!"
+      // });
       return "not implemented yet!";
     },
   });
